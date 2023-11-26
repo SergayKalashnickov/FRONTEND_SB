@@ -1,1 +1,1 @@
-export { SkeletonPage } from "./skeleton";
+export { SkeletonPage } from './skeleton'
