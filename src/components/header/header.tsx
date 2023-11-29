@@ -2,6 +2,7 @@ import React from 'react'
 import { Search } from '../search'
 import styled from '@emotion/styled'
 import { Cart, Favorite, Logo, Profile } from '../../shared/assets'
+import { Link } from 'react-router-dom'
 
 interface headerProps {
 	onChange: (e: string) => void
@@ -16,9 +17,15 @@ export const Header = (props: headerProps) => {
 			<Logo />
 			<Search onChange={onChange} onReset={onReset} value={value} />
 			<HeaderMenu>
-				<Cart />
-				<Profile />
-				<Favorite />
+				<Link to={'/catalog'}>
+					<Cart />
+				</Link>
+				<Link to={'/profile'}>
+					<Profile />
+				</Link>
+				<Link to={'/favorite'}>
+					<Favorite />
+				</Link>
 			</HeaderMenu>
 		</HeaderWrapper>
 	)
