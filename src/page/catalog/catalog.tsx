@@ -1,30 +1,38 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Sort } from '../../components/sort'
 import { Card, SkeletonPage } from '../../components'
 import { Pagination } from '@mui/material'
 import styled from '@emotion/styled'
-import { CardContext } from '../../context/card-context'
-import { UserContext } from '../../context/user-context'
+import { useAppDispatch, useAppSelector } from '../../services/hooks'
+import { fetchProductions } from '../../services/production/productionsSlice'
 
 export const Catalog = () => {
-	const cardContext = useContext(CardContext)
+	const [page, setPage] = useState<number>(1)
 
-	const user = useContext(UserContext)
+	const user = useAppSelector((state) => state.user).user
+	const product = useAppSelector((state) => state.productions)
 
-	if (!cardContext) return <SkeletonPage />
+	const dispatch = useAppDispatch()
 
-	const { cards, page, setPage, totalPage } = cardContext
+	useEffect(() => {
+		dispatch(fetchProductions({ page }))
+	}, [page])
 
-	if (!cards) return <SkeletonPage />
+	if (!product) return <SkeletonPage />
+
+	const { productions, totalPage } = product
+
+	if (!productions) return <SkeletonPage />
 
 	return (
 		<Wrapper>
 			<Sort />
 			<CardsWrapper>
-				{cards.map((item) => (
+				{productions.map((item) => (
 					<Card
 						key={item._id}
+						id={item._id}
 						pictures={item.pictures}
 						discount={item.discount}
 						price={item.price}

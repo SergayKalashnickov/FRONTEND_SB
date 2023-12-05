@@ -10,6 +10,11 @@ declare global {
 		group?: string
 	}
 
+	type FetchAllProduct = {
+		total: number
+		products: Card[]
+	}
+
 	interface Card {
 		author: User
 		name: string
@@ -22,7 +27,27 @@ declare global {
 		pictures: string
 		tags: string[]
 		likes: string[]
-		reviews: string[]
+		reviews: Review[]
 		_id: string
+	}
+
+	interface Review {
+		name: string
+		city: string
+		text: string
+		rating: number
+		author: {
+			name: string
+			about: string
+			avatar: string
+			email: string
+			password: string
+			isAdmin: boolean
+			group: string
+		}
+		product: string
+		_id: string
+		updated_at: string
+		created_at: string
 	}
 }

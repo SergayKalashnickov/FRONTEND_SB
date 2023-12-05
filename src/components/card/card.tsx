@@ -12,16 +12,18 @@ interface CardProps {
 	wight?: string
 	name: string
 	like: boolean
+	id: string
 }
 
 export const Card = (props: CardProps) => {
-	const { pictures, discount, price, name, wight, like } = props
+	const { pictures, discount, price, name, wight, like, id } = props
 
 	const location = useLocation()
+	console.log(id)
 
 	return (
 		<Wrapper>
-			<Link to={'/singleCard'} state={location}>
+			<Link to={`/singleCard/${id}`} state={location}>
 				<Picture src={pictures} alt={props.name} />
 			</Link>
 			{discount > 0 && <OldPrice>{price} ₽</OldPrice>}
@@ -29,7 +31,7 @@ export const Card = (props: CardProps) => {
 				{Math.round(discount ? price - (discount / 100) * price : price)} ₽
 			</Price>
 			<Typography variant='overline'>{wight}</Typography>
-			<Link to={'/singleCard'} state={location}>
+			<Link to={`/singleCard/${id}`} state={location}>
 				<text>{name}</text>
 			</Link>
 			<div>{like && 'Like'}</div>
