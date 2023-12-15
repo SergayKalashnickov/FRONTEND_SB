@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { css, Typography } from '@mui/material'
+import { Link, useLocation } from 'react-router-dom'
 
 interface CardProps {
 	pictures: string
@@ -10,19 +11,28 @@ interface CardProps {
 	price: number
 	wight?: string
 	name: string
+	like: boolean
 }
 
 export const Card = (props: CardProps) => {
-	const { pictures, discount, price, name, wight } = props
+	const { pictures, discount, price, name, wight, like } = props
+
+	const location = useLocation()
+
 	return (
 		<Wrapper>
-			<Picture src={pictures} alt={props.name} />
+			<Link to={'/singleCard'} state={location}>
+				<Picture src={pictures} alt={props.name} />
+			</Link>
 			{discount > 0 && <OldPrice>{price} ₽</OldPrice>}
 			<Price discount={!!discount}>
 				{Math.round(discount ? price - (discount / 100) * price : price)} ₽
 			</Price>
 			<Typography variant='overline'>{wight}</Typography>
-			<text>{name}</text>
+			<Link to={'/singleCard'} state={location}>
+				<text>{name}</text>
+			</Link>
+			<div>{like && 'Like'}</div>
 			<ButtonCard>В корзину</ButtonCard>
 		</Wrapper>
 	)

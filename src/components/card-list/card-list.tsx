@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { cards } from '../../api/mock/mock'
 import { Card } from '../card'
 import styled from '@emotion/styled'
 import { Pagination } from '@mui/material'
 import { Sort } from '../sort'
+import { UserContext } from '../../context/user-context'
 
 interface CardListProps {
 	search: string
@@ -25,6 +26,8 @@ export const CardList = (props: CardListProps) => {
 		(item, index) => index >= (page - 1) * PAGE_SIZE && index < page * PAGE_SIZE
 	)
 
+	const user = useContext<User | null>(UserContext)
+
 	return (
 		<Wrapper>
 			<Sort />
@@ -37,6 +40,7 @@ export const CardList = (props: CardListProps) => {
 						price={item.price}
 						name={item.name}
 						wight={item.wight}
+						like={user ? item.likes.includes(user._id) : false}
 					/>
 				))}
 			</CardsWrapper>
