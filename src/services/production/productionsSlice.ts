@@ -1,9 +1,3 @@
-// getAllProduction
-// deleteProduction
-// like
-// delete like
-// search production
-
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../hooks'
 import { isActionPending } from '../redux'
@@ -97,7 +91,6 @@ export const productionSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProductions.fulfilled, (state, { payload }) => {
-				console.log(payload)
 				state.productions = payload.products
 				state.totalPage = payload.total
 			})

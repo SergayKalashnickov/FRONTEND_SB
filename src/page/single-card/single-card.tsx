@@ -12,7 +12,6 @@ export const SingleCard = () => {
 	const dispatch = useAppDispatch()
 	const production = useAppSelector((state) => state.production).production
 
-	// if (!itemId) return null
 
 	useEffect(() => {
 		if (itemId != null) {

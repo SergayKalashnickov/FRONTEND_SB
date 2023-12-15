@@ -19,7 +19,6 @@ export const Card = (props: CardProps) => {
 	const { pictures, discount, price, name, wight, like, id } = props
 
 	const location = useLocation()
-	console.log(id)
 
 	return (
 		<Wrapper>

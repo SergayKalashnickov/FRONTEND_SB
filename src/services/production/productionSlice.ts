@@ -1,12 +1,7 @@
-// . Создать срез детальной карточки товара. Создать асинхронные экшены:
-// получение данных карточки, создание отзыва.
-
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../hooks'
 
 const sliceName = 'productions'
-
-//getProduction = getProductById
 
 export const getProductById = createAppAsyncThunk<Card, string>(
 	`${sliceName}/getProductById`,
@@ -19,7 +14,6 @@ export const getProductById = createAppAsyncThunk<Card, string>(
 		}
 	}
 )
-// createReview
 
 interface Production {
 	production: Card | null
