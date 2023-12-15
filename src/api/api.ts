@@ -21,7 +21,7 @@ type ServerResponse<T> = {
 export type TUserResponseDto = ServerResponse<User>
 export type TCommentResponseDto = ServerResponse<Comment>
 
-class Api {
+export class Api {
 	private baseUrl
 	private headers
 	constructor({ baseUrl, headers }: TConfigApi) {
@@ -35,13 +35,13 @@ class Api {
 		return `${this.baseUrl}${path}`
 	}
 
-	getUserInfo() {
+	getUserInfo(): Promise<User> {
 		return fetch(this.getApiUrl('/users/me'), {
 			headers: this.headers,
 		}).then(this.onResponse)
 	}
 
-	setUserInfo(userData: Pick<User, 'name' | 'about'>) {
+	setUserInfo(userData: Pick<User, 'name' | 'about'>): Promise<User> {
 		return fetch(this.getApiUrl('/users/me'), {
 			method: 'PATCH',
 			headers: this.headers,
@@ -62,7 +62,11 @@ class Api {
 		}).then(this.onResponse)
 	}
 
-	getAllProducts(payload: { query: string; page: number; limit: number }) {
+	getAllProducts(payload: {
+		query?: string
+		page?: number
+		limit?: number
+	}): Promise<FetchAllProduct> {
 		return fetch(
 			this.getApiUrl(
 				`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
@@ -71,6 +75,33 @@ class Api {
 				headers: this.headers,
 			}
 		).then(this.onResponse)
+	}
+
+	getProductById(productId: string) {
+		return fetch(this.getApiUrl(`/products/${productId}`), {
+			headers: this.headers,
+		}).then(this.onResponse)
+	}
+
+	deleteProduction(payload: { productId: string }) {
+		return fetch(this.getApiUrl(`/products/${payload.productId}`), {
+			method: 'DELETE',
+			headers: this.headers,
+		}).then(this.onResponse)
+	}
+
+	addLikes(payload: { productId: string }) {
+		return fetch(this.getApiUrl(`/products/likes/${payload.productId}`), {
+			method: 'PUT',
+			headers: this.headers,
+		}).then(this.onResponse)
+	}
+
+	deleteLikes(payload: { productId: string }) {
+		return fetch(this.getApiUrl(`/products/likes/${payload.productId}`), {
+			method: 'DELETE',
+			headers: this.headers,
+		}).then(this.onResponse)
 	}
 }
 const api = new Api({
