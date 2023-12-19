@@ -1,13 +1,19 @@
 import { Button, Typography } from '@mui/material'
 import styled from '@emotion/styled'
-import { fetchUsers } from '../../services/user/userSlice'
-import { useAppDispatch, useAppSelector } from '../../services/hooks'
+import { fetchUsers } from '../../app/store/slices/userSlice'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
+import { clearTokens } from '../../app/store/slices/authSlice'
+import { useEffect } from 'react'
 
 export const Profile = () => {
 	const dispatch = useAppDispatch()
 	const user = useAppSelector((state) => state.user)
 
-	dispatch(fetchUsers())
+	useEffect(() => {
+		dispatch(fetchUsers())
+	}, [])
+
+	const handlerExit = () => dispatch(clearTokens)
 
 	if (!user.user) return null
 
@@ -24,7 +30,9 @@ export const Profile = () => {
 					</Button>
 				</ProfilerInfo>
 			) : null}
-			<Button variant='outlined'>Выйти</Button>
+			<Button variant='outlined' onClick={handlerExit}>
+				Выйти
+			</Button>
 		</PageProfile>
 	)
 }

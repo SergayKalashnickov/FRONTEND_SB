@@ -8,9 +8,10 @@ import { NotFoundPage } from '../page/not-found-page'
 import { Profile, ProfileEdit } from '../page/profile'
 import { FavoritItems } from '../page/favorit-items'
 import { Catalog } from '../page/catalog'
-import { store } from '../services/store'
 import { Provider } from 'react-redux'
-
+import { SingInForm } from '../page/signin'
+import { store } from './store/store'
+import { SignUpForm } from '../page/signup'
 
 export const App = () => {
 	const [search, setSearch] = useState<string>('')
@@ -27,6 +28,8 @@ export const App = () => {
 					<Route path='/profile-edit' element={<ProfileEdit />} />
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/favorite' element={<FavoritItems />} />
+					<Route path='/signin' element={<SingInForm />} />
+					<Route path='/singup' element={<SignUpForm />} />
 				</Routes>
 				<Footer />
 			</Provider>

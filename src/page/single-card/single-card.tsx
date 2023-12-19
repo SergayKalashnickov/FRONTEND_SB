@@ -1,9 +1,9 @@
 import { useLocation, useParams } from 'react-router-dom'
 import { Button, Divider, Typography } from '@mui/material'
 import styled from '@emotion/styled'
-import { useAppDispatch, useAppSelector } from '../../services/hooks'
-import { getProductById } from '../../services/production/productionSlice'
+import { getProductById } from '../../app/store/slices/productionSlice'
 import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 
 export const SingleCard = () => {
 	const { itemId } = useParams()

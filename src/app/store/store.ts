@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { rootReducer } from './root-reducer'
 import api from '../api/api'
+import { authApi } from '../api/api'
 
 export const store = configureStore({
 	reducer: rootReducer,
@@ -11,5 +12,5 @@ export const store = configureStore({
 				extraArgument: api,
 			},
 			serializableCheck: false,
-		}),
+		}).concat(authApi.middleware),
 })

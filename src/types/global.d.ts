@@ -4,15 +4,21 @@ declare global {
 		name: string
 		about: string
 		avatar: string
-		_id: string
+		id: string
 		email: string
 		__v?: number
 		group?: string
 	}
 
-	type FetchAllProduct = {
+	interface FetchAllProduct {
 		total: number
 		products: Card[]
+	}
+
+	interface fetchProductionsPayload {
+		query?: string
+		page?: number
+		limit?: number
 	}
 
 	interface Card {
@@ -49,5 +55,10 @@ declare global {
 		_id: string
 		updated_at: string
 		created_at: string
+	}
+
+	interface Tokens {
+		accessToken: string
+		refreshToken: string
 	}
 }

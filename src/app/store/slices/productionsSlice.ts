@@ -87,7 +87,11 @@ const initialState: Productions = {
 export const productionSlice = createSlice({
 	name: sliceName,
 	initialState,
-	reducers: {},
+	reducers: {
+		cleanUp() {
+			return initialState
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProductions.fulfilled, (state, { payload }) => {

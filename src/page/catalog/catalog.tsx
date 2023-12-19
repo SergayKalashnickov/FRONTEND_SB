@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 import { Sort } from '../../components/sort'
 import { Card, SkeletonPage } from '../../components'
 import { Pagination } from '@mui/material'
 import styled from '@emotion/styled'
-import { useAppDispatch, useAppSelector } from '../../services/hooks'
-import { fetchProductions } from '../../services/production/productionsSlice'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
+import { fetchProductions } from '../../app/store/slices/productionsSlice'
+import { withProtection } from '../../HOCs/withProtection'
+import { useGetAllProductQuery } from '../../app/api/api'
 
-export const Catalog = () => {
+export const Catalog: FC = withProtection(() => {
 	const [page, setPage] = useState<number>(1)
 
+	const { data: product, isLoading } = useGetAllProductQuery({})
 	const user = useAppSelector((state) => state.user).user
-	const product = useAppSelector((state) => state.productions)
 
 	const dispatch = useAppDispatch()
 
@@ -19,17 +21,15 @@ export const Catalog = () => {
 		dispatch(fetchProductions({ page }))
 	}, [page])
 
-	if (!product) return <SkeletonPage />
+	if (!product || isLoading) return <SkeletonPage />
 
-	const { productions, totalPage } = product
-
-	if (!productions) return <SkeletonPage />
+	const { products, total } = product
 
 	return (
 		<Wrapper>
 			<Sort />
 			<CardsWrapper>
-				{productions.map((item) => (
+				{products.map((item) => (
 					<Card
 						key={item._id}
 						id={item._id}
@@ -38,19 +38,19 @@ export const Catalog = () => {
 						price={item.price}
 						name={item.name}
 						wight={item.wight}
-						like={user ? item.likes.includes(user._id) : false}
+						like={user ? item.likes.includes(user.id) : false}
 					/>
 				))}
 			</CardsWrapper>
 			<Pagination
-				count={totalPage}
+				count={total}
 				size='small'
 				page={page}
 				onChange={(e, page) => setPage(page)}
 			/>
 		</Wrapper>
 	)
-}
+})
 
 const Wrapper = styled.div`
 	display: flex;

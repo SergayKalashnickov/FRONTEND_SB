@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { cards } from '../../api/mock/mock'
+// import { cards } from '../../app/api/mock/mock'
 import { Card } from '../card'
 import styled from '@emotion/styled'
 import { Pagination } from '@mui/material'
 import { Sort } from '../sort'
-import { useAppSelector } from '../../services/hooks'
+import { useAppSelector } from '../../app/store/hooks'
 
 interface CardListProps {
 	search: string
@@ -17,6 +17,10 @@ export const CardList = (props: CardListProps) => {
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		setPage(value)
 	}
+
+	const cards = useAppSelector((state) => state.productions).productions
+
+	if (!cards) return null
 
 	const cardWithSearch = cards.filter((item) =>
 		item.name.toLowerCase().includes(search)
@@ -41,7 +45,7 @@ export const CardList = (props: CardListProps) => {
 						price={item.price}
 						name={item.name}
 						wight={item.wight}
-						like={user ? item.likes.includes(user._id) : false}
+						like={user ? item.likes.includes(user.id) : false}
 					/>
 				))}
 			</CardsWrapper>

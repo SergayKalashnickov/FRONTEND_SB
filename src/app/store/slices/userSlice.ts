@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../hooks'
 import { isActionPending } from '../redux'
+import { RootState } from '../types'
 
 const sliceName = 'user'
 
@@ -47,6 +48,9 @@ export const slice = createSlice({
 	name: sliceName,
 	initialState,
 	reducers: {
+		setUser(_, action: PayloadAction<User>) {
+			return { user: action.payload, loading: false, error: null }
+		},
 		cleanUp() {
 			return initialState
 		},
@@ -66,4 +70,6 @@ export const slice = createSlice({
 	},
 })
 
+export const userSelector = (state: RootState) => state.user
+export const { setUser, cleanUp } = slice.actions
 export const userReducer = slice.reducer

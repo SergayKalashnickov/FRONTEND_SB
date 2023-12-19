@@ -1,3 +1,6 @@
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { customBaseQuery } from './config'
+
 export const config = {
 	apiUrl: 'https://api.react-learning.ru/v2/group-12',
 	apiToken:
@@ -20,6 +23,91 @@ type ServerResponse<T> = {
 } & T
 export type TUserResponseDto = ServerResponse<User>
 export type TCommentResponseDto = ServerResponse<Comment>
+
+type BE_SignUpResponse = Omit<User, 'id'> & {
+	_id: User['id']
+}
+
+interface BE_SignInResponse {
+	data: BE_SignUpResponse
+	token: Tokens['accessToken']
+}
+
+type SignInResponse = {
+	data: User
+	token: Tokens['accessToken']
+}
+
+interface SignInFormValues {
+	email: string
+	password: string
+}
+
+interface SignUpFormValues {
+	email: string
+	group: string
+	password: string
+}
+
+export const authApi = createApi({
+	reducerPath: 'authApi',
+	tagTypes: ['User'],
+	baseQuery: customBaseQuery,
+	endpoints: (builder) => ({
+		signUp: builder.mutation<BE_SignUpResponse, SignUpFormValues>({
+			query: (signUpFormValues) => ({
+				url: 'signup',
+				method: 'POST',
+				body: signUpFormValues,
+			}),
+		}),
+		signIn: builder.mutation<SignInResponse, SignInFormValues>({
+			query: (signInFormValues) => ({
+				url: 'signin',
+				method: 'POST',
+				body: signInFormValues,
+			}),
+			transformResponse: (response: BE_SignInResponse) => {
+				const {
+					data: { _id, ...restData },
+					...restResponse
+				} = response
+
+				return {
+					data: {
+						id: _id,
+						...restData,
+					},
+					...restResponse,
+				}
+			},
+		}),
+		getAllProduct: builder.query<FetchAllProduct, fetchProductionsPayload>({
+			query: (payload) => ({
+				url: `/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`,
+				method: 'GET',
+			}),
+		}),
+	}),
+})
+
+// getAllProducts(payload: {
+// 	query?: string
+// 	page?: number
+// 	limit?: number
+// }): Promise<FetchAllProduct> {
+// 	return fetch(
+// 		this.getApiUrl(
+// 			`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
+// 		),
+// 		{
+// 			headers: this.headers,
+// 		}
+// 	).then(this.onResponse)
+// }
+
+export const { useSignUpMutation, useSignInMutation, useGetAllProductQuery } =
+	authApi
 
 export class Api {
 	private baseUrl

@@ -1,7 +1,7 @@
 import { Button, Input, Typography } from '@mui/material'
 import styled from '@emotion/styled'
-import { editUsers } from '../../services/user/userSlice'
-import { useAppDispatch, useAppSelector } from '../../services/hooks'
+import { editUsers } from '../../app/store/slices/userSlice'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 import { useState } from 'react'
 
 export const ProfileEdit = () => {
