@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
-import { cards } from '../../api/mock/mock'
+import React, { useState } from 'react'
+// import { cards } from '../../app/api/mock/mock'
 import { Card } from '../card'
 import styled from '@emotion/styled'
 import { Pagination } from '@mui/material'
 import { Sort } from '../sort'
-import { UserContext } from '../../context/user-context'
+import { useAppSelector } from '../../app/store/hooks'
 
 interface CardListProps {
 	search: string
@@ -18,6 +18,10 @@ export const CardList = (props: CardListProps) => {
 		setPage(value)
 	}
 
+	const cards = useAppSelector((state) => state.productions).productions
+
+	if (!cards) return null
+
 	const cardWithSearch = cards.filter((item) =>
 		item.name.toLowerCase().includes(search)
 	)
@@ -26,7 +30,7 @@ export const CardList = (props: CardListProps) => {
 		(item, index) => index >= (page - 1) * PAGE_SIZE && index < page * PAGE_SIZE
 	)
 
-	const user = useContext<User | null>(UserContext)
+	const user = useAppSelector((state) => state.user).user
 
 	return (
 		<Wrapper>
@@ -35,12 +39,13 @@ export const CardList = (props: CardListProps) => {
 				{paginationCard.map((item) => (
 					<Card
 						key={item._id}
+						id={item._id}
 						pictures={item.pictures}
 						discount={item.discount}
 						price={item.price}
 						name={item.name}
 						wight={item.wight}
-						like={user ? item.likes.includes(user._id) : false}
+						like={user ? item.likes.includes(user.id) : false}
 					/>
 				))}
 			</CardsWrapper>
