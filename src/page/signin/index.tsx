@@ -99,10 +99,6 @@ export const SingInForm = () => {
 			<Button
 				type='submit'
 				disabled={isSubmitted && (!isValid || isSubmitting)}
-				// loading={isSubmitting}
-				// fullWidth
-				// variant='contained'
-				// sx={{ mt: 3, mb: 2 }}
 			>
 				Sign In
 			</Button>

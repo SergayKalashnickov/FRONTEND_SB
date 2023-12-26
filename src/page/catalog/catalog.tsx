@@ -14,7 +14,6 @@ export const Catalog
 	: FC = withProtection(
 	() => {
 
-		// const [page, setPage] = useState<number>(1)
 
 		const [productionOnPage, setProductionOnPage] = useState<Card[]>([])
 		const [searchParams, setSearchParams] = useSearchParams()
