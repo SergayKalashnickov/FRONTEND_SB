@@ -4,18 +4,12 @@ import styled from '@emotion/styled'
 import { Cart, Favorite, Logo, Profile } from '../../shared/assets'
 import { Link } from 'react-router-dom'
 
-interface headerProps {
-	onChange: (e: string) => void
-	value: string
-	onReset: () => void
-}
+export const Header = () => {
 
-export const Header = (props: headerProps) => {
-	const { onChange, onReset, value } = props
 	return (
 		<HeaderWrapper>
 			<Logo />
-			<Search onChange={onChange} onReset={onReset} value={value} />
+			<Search />
 			<HeaderMenu>
 				<Link to={'/catalog'}>
 					<Cart />

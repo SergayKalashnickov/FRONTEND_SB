@@ -91,21 +91,6 @@ export const authApi = createApi({
 	}),
 })
 
-// getAllProducts(payload: {
-// 	query?: string
-// 	page?: number
-// 	limit?: number
-// }): Promise<FetchAllProduct> {
-// 	return fetch(
-// 		this.getApiUrl(
-// 			`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
-// 		),
-// 		{
-// 			headers: this.headers,
-// 		}
-// 	).then(this.onResponse)
-// }
-
 export const { useSignUpMutation, useSignInMutation, useGetAllProductQuery } =
 	authApi
 
@@ -150,20 +135,20 @@ export class Api {
 		}).then(this.onResponse)
 	}
 
-	getAllProducts(payload: {
-		query?: string
-		page?: number
-		limit?: number
-	}): Promise<FetchAllProduct> {
-		return fetch(
-			this.getApiUrl(
-				`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
-			),
-			{
-				headers: this.headers,
-			}
-		).then(this.onResponse)
-	}
+	// getAllProducts(payload: {
+	// 	query?: string
+	// 	page?: number
+	// 	limit?: number
+	// }): Promise<FetchAllProduct> {
+	// 	return fetch(
+	// 		this.getApiUrl(
+	// 			`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
+	// 		),
+	// 		{
+	// 			headers: this.headers,
+	// 		}
+	// 	).then(this.onResponse)
+	// }
 
 	getProductById(productId: string) {
 		return fetch(this.getApiUrl(`/products/${productId}`), {
