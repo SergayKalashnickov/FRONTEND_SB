@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import { cards } from '../../app/api/mock/mock'
 import { Card } from '../card'
 import styled from '@emotion/styled'
 import { Pagination } from '@mui/material'

@@ -1,24 +1,28 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { useDebounce } from '../../shared/utils/debounce'
+import { setSearch } from '../../app/store/slices/productionsSlice'
+import { useAppDispatch } from '../../app/store/hooks'
 
-export interface SearchProps
-	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-	onChange: (e: string) => void
-	value: string
-	onReset: () => void
-}
 
-export const Search = (props: SearchProps) => {
-	const { onReset, onChange, value } = props
+export const Search = () => {
+	const [values, setValues] = useState<string>('')
+	const dispatch = useAppDispatch()
 
-	const handlerReset = (e: ChangeEvent<HTMLInputElement>) => {
-		onChange(e.target.value)
+	const debouncedValue = useDebounce<string>(values, 300)
+
+	const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setValues(e.target.value)
 	}
+
+	useEffect(() => {
+		dispatch(setSearch(debouncedValue))
+	}, [debouncedValue])
 
 	return (
 		<>
-			<SearchStyled value={value} onChange={handlerReset} />
-			<ButtonReset onClick={onReset}>x</ButtonReset>
+			<SearchStyled value={values} onChange={handlerChange} />
+			<ButtonReset onClick={() => setValues('')}>x</ButtonReset>
 		</>
 	)
 }
