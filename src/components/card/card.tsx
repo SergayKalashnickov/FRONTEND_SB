@@ -2,6 +2,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { css, Typography } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
+import { useAppDispatch } from '../../app/store/hooks'
+import { addProductBasket } from '../../app/store/slices/userSlice'
 
 interface CardProps {
 	pictures: string
@@ -19,6 +21,9 @@ export const Card = (props: CardProps) => {
 	const { pictures, discount, price, name, wight, like, id } = props
 
 	const location = useLocation()
+	const dispatch = useAppDispatch()
+
+	const addCard = () => dispatch(addProductBasket({ id, counter: 1 }))
 
 	return (
 		<Wrapper>
@@ -34,7 +39,7 @@ export const Card = (props: CardProps) => {
 				<text>{name}</text>
 			</Link>
 			<div>{like && 'Like'}</div>
-			<ButtonCard>В корзину</ButtonCard>
+			<ButtonCard onClick={addCard}>В корзину</ButtonCard>
 		</Wrapper>
 	)
 }

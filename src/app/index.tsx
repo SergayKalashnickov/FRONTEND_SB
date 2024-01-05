@@ -1,7 +1,6 @@
 import './styles.css'
 import { Header, Footer } from '../components'
 import styled from '@emotion/styled'
-import { Dispatch, SetStateAction, useDeferredValue, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { SingleCard } from '../page/single-card'
 import { NotFoundPage } from '../page/not-found-page'
@@ -12,8 +11,7 @@ import { Provider } from 'react-redux'
 import { SingInForm } from '../page/signin'
 import { store } from './store/store'
 import { SignUpForm } from '../page/signup'
-import { useAppSelector } from './store/hooks'
-import { setSearch } from './store/slices/productionsSlice'
+import { Basker } from '../page/basket'
 
 export const App = () => {
 	return (
@@ -29,6 +27,7 @@ export const App = () => {
 					<Route path='/favorite' element={<FavoritItems />} />
 					<Route path='/signin' element={<SingInForm />} />
 					<Route path='/singup' element={<SignUpForm />} />
+					<Route path='/basket' element={<Basker />} />
 				</Routes>
 				<Footer />
 			</Provider>

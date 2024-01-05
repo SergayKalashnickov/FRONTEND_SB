@@ -58,7 +58,7 @@ const initialState: Productions = {
 	loading: false,
 	error: null,
 	search: '',
-	pageActive: 1
+	pageActive: 1,
 }
 
 export const productionSlice = createSlice({
@@ -69,13 +69,11 @@ export const productionSlice = createSlice({
 			return initialState
 		},
 		setSearch(state, action: PayloadAction<string>) {
-			console.log(action.payload)
 			state.search = action.payload
 		},
 		nextPage(state) {
-			console.log(state.pageActive)
 			state.pageActive = state.pageActive + 1
-		}
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addMatcher(

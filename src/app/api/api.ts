@@ -52,7 +52,6 @@ interface SignUpFormValues {
 
 export const authApi = createApi({
 	reducerPath: 'authApi',
-	tagTypes: ['User'],
 	baseQuery: customBaseQuery,
 	endpoints: (builder) => ({
 		signUp: builder.mutation<BE_SignUpResponse, SignUpFormValues>({
@@ -88,11 +87,21 @@ export const authApi = createApi({
 				method: 'GET',
 			}),
 		}),
+		getProductById: builder.query<Card, { id: string }>({
+			query: ({ id }) => ({
+				url: `/products/${id}`,
+				method: 'GET',
+			}),
+		}),
 	}),
 })
 
-export const { useSignUpMutation, useSignInMutation, useGetAllProductQuery } =
-	authApi
+export const {
+	useSignUpMutation,
+	useSignInMutation,
+	useGetAllProductQuery,
+	useGetProductByIdQuery,
+} = authApi
 
 export class Api {
 	private baseUrl
@@ -161,11 +170,11 @@ export class Api {
 		}).then(this.onResponse)
 	}
 }
-const api = new Api({
+export const api = new Api({
 	baseUrl: config.apiUrl,
 	headers: {
 		'content-type': 'application/json',
-		authorization: `Bearer ${store.getState().auth.accessToken}`,
+		// authorization: `Bearer ${store.getState().auth.accessToken}`,
 	},
 })
 export default api
