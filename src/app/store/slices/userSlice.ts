@@ -36,12 +36,17 @@ interface UserState {
 	user: User | null
 	loading: boolean | null
 	error: string | null
+	basket?: Array<{
+		id: string
+		counter: number
+	}>
 }
 
 const initialState: UserState = {
 	user: null,
 	loading: false,
 	error: null,
+	basket: [],
 }
 
 export const slice = createSlice({
@@ -50,6 +55,45 @@ export const slice = createSlice({
 	reducers: {
 		setUser(_, action: PayloadAction<User>) {
 			return { user: action.payload, loading: false, error: null }
+		},
+		addProductBasket(
+			state,
+			action: PayloadAction<{
+				id: string
+				counter: number
+			}>
+		) {
+			if (!state.basket) state.basket = []
+			// state.basket.push(action.payload)
+			const itemIndex = state.basket.findIndex(
+				(backet) => backet.id === action.payload.id
+			)
+
+			if (itemIndex === -1) state.basket.push(action.payload)
+
+			if (itemIndex !== -1 && state.basket[itemIndex]) {
+				if (action.payload.counter === 1) state.basket[itemIndex].counter += 1
+				if (action.payload.counter === -1) state.basket[itemIndex].counter -= 1
+				if (state.basket[itemIndex].counter === 0) {
+					state.basket.splice(itemIndex, 1)
+				}
+			}
+			// else state.basket.push(action.payload)
+			// if (action.payload.counter === 0 && state.basket)
+			// 	state.basket = state.basket.slice(itemIndex, 1)
+		},
+		deleteProductBasket(
+			state,
+			action: PayloadAction<{
+				id: string
+			}>
+		) {
+			if (state.basket) {
+				const itemIndex = state.basket.findIndex(
+					(backet) => backet.id === action.payload.id
+				)
+				state.basket = state.basket.slice(itemIndex, 1)
+			}
 		},
 		cleanUp() {
 			return initialState
@@ -71,5 +115,5 @@ export const slice = createSlice({
 })
 
 export const userSelector = (state: RootState) => state.user
-export const { setUser, cleanUp } = slice.actions
+export const { setUser, cleanUp, addProductBasket } = slice.actions
 export const userReducer = slice.reducer

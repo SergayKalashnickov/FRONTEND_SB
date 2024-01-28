@@ -1,7 +1,6 @@
 import './styles.css'
 import { Header, Footer } from '../components'
 import styled from '@emotion/styled'
-import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { SingleCard } from '../page/single-card'
 import { NotFoundPage } from '../page/not-found-page'
@@ -12,15 +11,13 @@ import { Provider } from 'react-redux'
 import { SingInForm } from '../page/signin'
 import { store } from './store/store'
 import { SignUpForm } from '../page/signup'
+import { Basker } from '../page/basket'
 
 export const App = () => {
-	const [search, setSearch] = useState<string>('')
-	const setSearchValue = () => setSearch('')
-
 	return (
 		<Page>
 			<Provider store={store}>
-				<Header onChange={setSearch} value={search} onReset={setSearchValue} />
+				<Header />
 				<Routes>
 					<Route path={'*'} element={<NotFoundPage />} />
 					<Route path='/catalog' element={<Catalog />} />
@@ -30,6 +27,7 @@ export const App = () => {
 					<Route path='/favorite' element={<FavoritItems />} />
 					<Route path='/signin' element={<SingInForm />} />
 					<Route path='/singup' element={<SignUpForm />} />
+					<Route path='/basket' element={<Basker />} />
 				</Routes>
 				<Footer />
 			</Provider>

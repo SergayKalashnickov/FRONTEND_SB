@@ -1,32 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../hooks'
 import { isActionPending } from '../redux'
 
 const sliceName = 'productions'
-
-interface fetchProductionsPayload {
-	query?: string
-	page?: number
-	limit?: number
-}
-
-export const fetchProductions = createAppAsyncThunk<
-	FetchAllProduct,
-	fetchProductionsPayload
->(
-	`${sliceName}/fetchProductions`,
-	async (
-		{ query = '', page },
-		{ fulfillWithValue, rejectWithValue, extra: api }
-	) => {
-		try {
-			const data = await api.getAllProducts({ query, page, limit: PAGE_SIZE })
-			return fulfillWithValue(data)
-		} catch (e) {
-			return rejectWithValue(e)
-		}
-	}
-)
 
 export const deleteProductions = createAppAsyncThunk<
 	Card,
@@ -42,9 +18,6 @@ export const deleteProductions = createAppAsyncThunk<
 		}
 	}
 )
-
-export const searchProductions = (payload: string) =>
-	fetchProductions({ query: payload })
 
 export const setLike = createAppAsyncThunk<void, string>(
 	`${sliceName}/setLike`,
@@ -75,6 +48,8 @@ interface Productions {
 	loading: boolean | null
 	error: string | null
 	totalPage: number
+	search: string
+	pageActive: number
 }
 
 const initialState: Productions = {
@@ -82,6 +57,8 @@ const initialState: Productions = {
 	totalPage: 1,
 	loading: false,
 	error: null,
+	search: '',
+	pageActive: 1,
 }
 
 export const productionSlice = createSlice({
@@ -91,20 +68,23 @@ export const productionSlice = createSlice({
 		cleanUp() {
 			return initialState
 		},
+		setSearch(state, action: PayloadAction<string>) {
+			state.search = action.payload
+		},
+		nextPage(state) {
+			state.pageActive = state.pageActive + 1
+		},
 	},
 	extraReducers: (builder) => {
-		builder
-			.addCase(fetchProductions.fulfilled, (state, { payload }) => {
-				state.productions = payload.products
-				state.totalPage = payload.total
-			})
-			.addMatcher(isActionPending(`/${sliceName}`), (state, { paylaod }) => {
+		builder.addMatcher(
+			isActionPending(`/${sliceName}`),
+			(state, { paylaod }) => {
 				state.loading = false
 				state.error = paylaod
-			})
+			}
+		)
 	},
 })
 
-const PAGE_SIZE = 12
-
+export const { cleanUp, setSearch, nextPage } = productionSlice.actions
 export const productionsReducer = productionSlice.reducer

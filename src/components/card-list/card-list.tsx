@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import { cards } from '../../app/api/mock/mock'
 import { Card } from '../card'
 import styled from '@emotion/styled'
 import { Pagination } from '@mui/material'
@@ -19,6 +18,7 @@ export const CardList = (props: CardListProps) => {
 	}
 
 	const cards = useAppSelector((state) => state.productions).productions
+	const user = useAppSelector((state) => state.user).user
 
 	if (!cards) return null
 
@@ -29,8 +29,6 @@ export const CardList = (props: CardListProps) => {
 	const paginationCard = cardWithSearch.filter(
 		(item, index) => index >= (page - 1) * PAGE_SIZE && index < page * PAGE_SIZE
 	)
-
-	const user = useAppSelector((state) => state.user).user
 
 	return (
 		<Wrapper>

@@ -1,10 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { customBaseQuery } from './config'
+import { fetchBaseQuery } from '@reduxjs/toolkit/query'
+import { RootState } from '../store/types'
+import { store } from '../store/store'
 
 export const config = {
 	apiUrl: 'https://api.react-learning.ru/v2/group-12',
-	apiToken:
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTY3NGY2M2FmMjA3YTRlZGJmZGRlYjYiLCJncm91cCI6Imdyb3VwLTEyIiwiaWF0IjoxNzAxMjY5NDE4LCJleHAiOjE3MzI4MDU0MTh9.FoShIw_ln8i1oU46ko5jI6lsURmZ_vqMOTIWPqfLqqg',
 }
 
 type TConfigApi = {
@@ -51,7 +52,6 @@ interface SignUpFormValues {
 
 export const authApi = createApi({
 	reducerPath: 'authApi',
-	tagTypes: ['User'],
 	baseQuery: customBaseQuery,
 	endpoints: (builder) => ({
 		signUp: builder.mutation<BE_SignUpResponse, SignUpFormValues>({
@@ -72,7 +72,6 @@ export const authApi = createApi({
 					data: { _id, ...restData },
 					...restResponse
 				} = response
-
 				return {
 					data: {
 						id: _id,
@@ -88,26 +87,21 @@ export const authApi = createApi({
 				method: 'GET',
 			}),
 		}),
+		getProductById: builder.query<Card, { id: string }>({
+			query: ({ id }) => ({
+				url: `/products/${id}`,
+				method: 'GET',
+			}),
+		}),
 	}),
 })
 
-// getAllProducts(payload: {
-// 	query?: string
-// 	page?: number
-// 	limit?: number
-// }): Promise<FetchAllProduct> {
-// 	return fetch(
-// 		this.getApiUrl(
-// 			`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
-// 		),
-// 		{
-// 			headers: this.headers,
-// 		}
-// 	).then(this.onResponse)
-// }
-
-export const { useSignUpMutation, useSignInMutation, useGetAllProductQuery } =
-	authApi
+export const {
+	useSignUpMutation,
+	useSignInMutation,
+	useGetAllProductQuery,
+	useGetProductByIdQuery,
+} = authApi
 
 export class Api {
 	private baseUrl
@@ -149,22 +143,6 @@ export class Api {
 			body: JSON.stringify(data),
 		}).then(this.onResponse)
 	}
-
-	getAllProducts(payload: {
-		query?: string
-		page?: number
-		limit?: number
-	}): Promise<FetchAllProduct> {
-		return fetch(
-			this.getApiUrl(
-				`/products?query=${payload.query}&page=${payload.page}&limit=${payload.limit}`
-			),
-			{
-				headers: this.headers,
-			}
-		).then(this.onResponse)
-	}
-
 	getProductById(productId: string) {
 		return fetch(this.getApiUrl(`/products/${productId}`), {
 			headers: this.headers,
@@ -192,11 +170,11 @@ export class Api {
 		}).then(this.onResponse)
 	}
 }
-const api = new Api({
+export const api = new Api({
 	baseUrl: config.apiUrl,
 	headers: {
 		'content-type': 'application/json',
-		authorization: `Bearer ${config.apiToken}`,
+		// authorization: `Bearer ${store.getState().auth.accessToken}`,
 	},
 })
 export default api

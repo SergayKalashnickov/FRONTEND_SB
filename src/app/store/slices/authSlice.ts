@@ -14,7 +14,7 @@ export const authSlice = createSlice({
 		setTokens(_, action: PayloadAction<Tokens>) {
 			return action.payload
 		},
-		setAccessToekn(state, action: PayloadAction<Pick<Tokens, 'accessToken'>>) {
+		setAccessToken(state, action: PayloadAction<Pick<Tokens, 'accessToken'>>) {
 			state.accessToken = action.payload.accessToken
 		},
 		clearTokens() {
@@ -28,5 +28,5 @@ export const accessTokenSelector = (state: RootState) => state.auth.accessToken
 export const refreshTokenSelector = (state: RootState) =>
 	state.auth.refreshToken
 
-export const { setTokens, setAccessToekn, clearTokens } = authSlice.actions
+export const { setTokens, setAccessToken, clearTokens } = authSlice.actions
 export const authReducer = authSlice.reducer

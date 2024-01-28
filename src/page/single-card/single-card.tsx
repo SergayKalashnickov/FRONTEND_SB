@@ -4,21 +4,15 @@ import styled from '@emotion/styled'
 import { getProductById } from '../../app/store/slices/productionSlice'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
+import { useGetProductByIdQuery } from '../../app/api/api'
 
 export const SingleCard = () => {
 	const { itemId } = useParams()
 	const location = useLocation()
 
-	const dispatch = useAppDispatch()
-	const production = useAppSelector((state) => state.production).production
-
-
-	useEffect(() => {
-		if (itemId != null) {
-			dispatch(getProductById(itemId))
-		}
-	}, [])
-
+	const { data: production } = useGetProductByIdQuery({
+		id: itemId ? itemId : '',
+	})
 	if (!production) return null
 
 	return (
@@ -40,8 +34,8 @@ export const SingleCard = () => {
 			</div>
 			<Typography variant='h2'>Отзывы</Typography>
 			<Button>Написать отзыв</Button>
-			{production.reviews.map((review) => (
-				<div key={production._id}>
+			{production.reviews.map((review: Review) => (
+				<div key={production?._id}>
 					<Typography variant='h2'>{review.author.name}</Typography>
 					<Typography>{review.created_at}</Typography>
 					<Typography>{review.city}</Typography>

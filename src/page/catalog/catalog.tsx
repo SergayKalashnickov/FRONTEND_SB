@@ -2,34 +2,66 @@ import React, { FC, useEffect, useState } from 'react'
 
 import { Sort } from '../../components/sort'
 import { Card, SkeletonPage } from '../../components'
-import { Pagination } from '@mui/material'
+import { Divider, Pagination } from '@mui/material'
 import styled from '@emotion/styled'
-import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { fetchProductions } from '../../app/store/slices/productionsSlice'
 import { withProtection } from '../../HOCs/withProtection'
 import { useGetAllProductQuery } from '../../app/api/api'
+import { useParams, useSearchParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
+import { nextPage, cleanUp } from '../../app/store/slices/productionsSlice'
 
 export const Catalog: FC = withProtection(() => {
-	const [page, setPage] = useState<number>(1)
+	const [productionOnPage, setProductionOnPage] = useState<Card[]>([])
+	const [searchParams, setSearchParams] = useSearchParams()
 
-	const { data: product, isLoading } = useGetAllProductQuery({})
 	const user = useAppSelector((state) => state.user).user
-
+	const { search, pageActive } = useAppSelector((state) => state.productions)
 	const dispatch = useAppDispatch()
 
+	const [page, setPage] = useState<number>(1)
+
+	const { data: production, isLoading } = useGetAllProductQuery({
+		page: pageActive,
+		query: search,
+		limit: 12,
+	})
+
 	useEffect(() => {
-		dispatch(fetchProductions({ page }))
-	}, [page])
+		if (
+			production &&
+			production.products.length &&
+			production.products !== productionOnPage
+		)
+			setProductionOnPage((prev) => prev.concat(production.products))
+	}, [pageActive])
 
-	if (!product || isLoading) return <SkeletonPage />
+	useEffect(() => {
+		setSearchParams(search ? { query: search } : '')
+	}, [search])
 
-	const { products, total } = product
+	useEffect(() => {
+		dispatch(cleanUp())
+	}, [])
+
+	useEffect(() => {
+		const observer = new IntersectionObserver((entries) => {
+			if (entries[0].isIntersecting) {
+				dispatch(nextPage())
+			}
+		})
+
+		const list = document.querySelector('#buttom')
+
+		if (list) observer.observe(list!)
+	}, [production])
+
+	if (!productionOnPage || isLoading) return <SkeletonPage />
 
 	return (
 		<Wrapper>
 			<Sort />
 			<CardsWrapper>
-				{products.map((item) => (
+				{productionOnPage.map((item) => (
 					<Card
 						key={item._id}
 						id={item._id}
@@ -42,12 +74,7 @@ export const Catalog: FC = withProtection(() => {
 					/>
 				))}
 			</CardsWrapper>
-			<Pagination
-				count={total}
-				size='small'
-				page={page}
-				onChange={(e, page) => setPage(page)}
-			/>
+			<Divider id={'buttom'} />
 		</Wrapper>
 	)
 })
