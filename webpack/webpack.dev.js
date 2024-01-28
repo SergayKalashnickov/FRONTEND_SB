@@ -1,5 +1,5 @@
-const path = require('path'); //для того чтобы превратить отнсительный путь в абсолютный мы будем использовать пакет path
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const path = require('path') //для того чтобы превратить отнсительный путь в абсолютный мы будем использовать пакет path
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 module.exports = {
 	mode: 'development',
@@ -13,4 +13,4 @@ module.exports = {
 		hot: true,
 	},
 	plugins: [new ReactRefreshWebpackPlugin()],
-};
+}

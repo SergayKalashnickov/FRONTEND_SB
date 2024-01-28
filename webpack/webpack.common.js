@@ -1,31 +1,29 @@
 const HTMLWebpackPlugins = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const path = require('path') //для того чтобы превратить отнсительный путь в абсолютный мы будем использовать пакет path
+const path = require('path')
 const webpack = require('webpack')
 
 const production = process.env.NODE_ENV === 'production'
 
 module.exports = {
-	entry: path.resolve(__dirname, '..', './src/index.tsx'), //точка входа в наше приложение содержит абсолютный путь к index.tsx
+	entry: path.resolve(__dirname, '..', './src/index.tsx'),
 	output: {
-		path: path.resolve(__dirname, '..', './dist'), //путь куда будет собираться наш проект
+		path: path.resolve(__dirname, '..', './dist'),
 		filename: production
 			? 'static/scripts/[name].[contenthash].js'
-			: 'static/scripts/[name].js', // имя нашего бандла
+			: 'static/scripts/[name].js',
 	},
-	//Нужно помочь вебпаку научится работать с jsx и tsx файлами для этого используют ts loader
+
 	module: {
 		rules: [
 			{
-				test: /\.[tj]sx?$/, //содержит регулярное выражение, которое содержит информацию какие файлы должны обрабатываться этим loader'ом
+				test: /\.[tj]sx?$/,
 				use: [
 					{
 						loader: 'ts-loader',
 					},
-				], // для того чтобы ts-loader корректно отработал нам нужен tsconfig его можно создать вручную, а можно создать автоматически
-				/** чтобы проиницилизовать его автоматически можно установить пакет typesctipt глобально или использовать npx выполнив команду npx tsc --init
-				После создания конфига нужно включить "allowJs": true, чтобы работать не только c typescript, также меняем "jsx": "react" чтобы мы могли работать с react компонентами и включаем карту ресурсов "sourceMap": true, пока на этом все вернемся в этот конфиг позже*/
+				],
 				exclude: /node_modules/,
 			},
 			{
@@ -70,7 +68,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'], //указываем файлы с которыми будет работать webpack
 		alias: {
-			'@components': path.resolve(__dirname, '/src/components'),
+			'@components': path.resolve(__dirname, 'src/components'),
 		},
 	},
 	plugins: [

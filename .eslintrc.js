@@ -10,6 +10,23 @@ module.exports = {
 		react: {
 			version: 'detect',
 		},
+		// 'import/resolver': {
+		// 	alias: {
+		// 		map: [
+		// 			// ['*', '.'],
+		// 			// ['@src', './src'],
+		// 			['@components', '/src/components'],
+		// 			['@shared', '/src/shared'],
+		// 			// ['@app', '/src/app'],
+		// 			// ['@types', '/src/types'],
+		// 			// ['@page', '/src/page'],
+		// 		],
+		// 	},
+		// 	// node: {
+		// 	// 	extensions: ['.js', '.jsx', '.ts', '.tsx'],
+		// 	// 	moduleDirectory: ['node_modules', 'src/'],
+		// 	// },
+		// },
 	},
 	extends: [
 		'plugin:@typescript-eslint/recommended',
@@ -22,6 +39,7 @@ module.exports = {
 		'plugin:import/typescript',
 		'plugin:jsx-a11y/recommended',
 		'plugin:eslint-comments/recommended',
+		'plugin:import/recommended',
 	],
 	rules: {
 		quotes: [2, 'single', { avoidEscape: true }],
@@ -34,12 +52,3 @@ module.exports = {
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 	},
 }
-//.eslintignore
-// node_modules
-// public
-//     .eslintrc.js
-// storybook-static
-// build
-// dist
-// webpack/*.js
-// package*.json
