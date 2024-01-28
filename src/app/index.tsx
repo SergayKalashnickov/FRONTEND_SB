@@ -1,17 +1,17 @@
 import './styles.css'
-import { Header, Footer } from '../components'
+import { Footer, Header } from '../components'
 import styled from '@emotion/styled'
 import { Route, Routes } from 'react-router-dom'
 import { SingleCard } from '../page/single-card'
 import { NotFoundPage } from '../page/not-found-page'
 import { Profile, ProfileEdit } from '../page/profile'
-import { FavoritItems } from '../page/favorit-items'
+import { FavoriteItems } from '../page/favorit-items'
 import { Catalog } from '../page/catalog'
 import { Provider } from 'react-redux'
 import { SingInForm } from '../page/signin'
 import { store } from './store/store'
 import { SignUpForm } from '../page/signup'
-import { Basker } from '../page/basket'
+import { Backer } from '../page/basket'
 
 export const App = () => {
 	return (
@@ -24,10 +24,10 @@ export const App = () => {
 					<Route path='/singleCard/:itemId' element={<SingleCard />} />
 					<Route path='/profile-edit' element={<ProfileEdit />} />
 					<Route path='/profile' element={<Profile />} />
-					<Route path='/favorite' element={<FavoritItems />} />
-					<Route path='/signin' element={<SingInForm />} />
-					<Route path='/singup' element={<SignUpForm />} />
-					<Route path='/basket' element={<Basker />} />
+					<Route path='/favorite' element={<FavoriteItems />} />
+					<Route path='/signIn' element={<SingInForm />} />
+					<Route path='/signUp' element={<SignUpForm />} />
+					<Route path='/basket' element={<Backer />} />
 				</Routes>
 				<Footer />
 			</Provider>

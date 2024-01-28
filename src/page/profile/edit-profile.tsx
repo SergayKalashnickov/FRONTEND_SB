@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { editUsers } from '../../app/store/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export const ProfileEdit = () => {
 	const dispatch = useAppDispatch()
@@ -21,7 +22,7 @@ export const ProfileEdit = () => {
 	return (
 		<PageProfile>
 			<Typography variant='h3'>Профиль</Typography>
-			<Button href='/profile'>Назад</Button>
+			<Link to='/profile'>Назад</Link>
 			<ProfilerInfo>
 				<Input
 					value={name}

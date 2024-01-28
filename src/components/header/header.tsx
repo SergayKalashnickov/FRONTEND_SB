@@ -1,28 +1,32 @@
 import React from 'react'
-import { Search } from '../search'
 import styled from '@emotion/styled'
-import { Cart, Favorite, Logo, Profile } from '../../shared/assets'
 import { Link } from 'react-router-dom'
+// import Logo from '../../shared/assets/icon/logo.svg'
+// import Cart from '../../shared/assets/icon/cart.svg'
+// import Profile from '../../shared/assets/icon/profile.svg'
+// import Favorite from '../../shared/assets/icon/favorite.svg'
+import { Search } from '../search'
 import { useAppSelector } from '../../app/store/hooks'
+import { Cart, Favorite, Logo, Profile } from '../../shared/assets'
 
 export const Header = () => {
 	const basket = useAppSelector((state) => state.user).basket
 
 	return (
 		<HeaderWrapper>
-			<Link to={'/catalog'}>
+			<Link data-testid={'link-catalog'} to={'/catalog'}>
 				<Logo />
 			</Link>
 			<Search />
 			<HeaderMenu>
-				<Link to={'/basket'}>
+				<Link data-testid={'link-card'} to={'/basket'}>
 					<Cart />
 					<BacketBubble>{basket && basket.length}</BacketBubble>
 				</Link>
-				<Link to={'/profile'}>
+				<Link data-testid={'link-profile'} to={'/profile'}>
 					<Profile />
 				</Link>
-				<Link to={'/favorite'}>
+				<Link data-testid={'link-favorite'} to={'/favorite'}>
 					<Favorite />
 				</Link>
 			</HeaderMenu>
@@ -48,7 +52,7 @@ const BacketBubble = styled.div`
 	border-radius: 5px;
 	padding-left: 3px;
 	padding-right: 3px;
-	position: fixed;
+	position: absolute;
 	background: red;
 	font-size: x-small;
 	top: 20px;

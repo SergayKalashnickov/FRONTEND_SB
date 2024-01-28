@@ -1,4 +1,4 @@
-import { Button, Typography, Link, TextField } from '@mui/material'
+import { Button, Link, TextField, Typography } from '@mui/material'
 import { useSignInMutation } from '../../app/api/api'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -31,6 +31,7 @@ export const SingInForm = () => {
 			batch(() => {
 				dispatch(setUser(response.data))
 				dispatch(setTokens({ accessToken: response.token, refreshToken: '' }))
+				localStorage.setItem('Token', response.token)
 			})
 			navigate(
 				objectHasProperty(state, 'from') && typeof state.from === 'string'

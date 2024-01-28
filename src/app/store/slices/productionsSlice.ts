@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../hooks'
 import { isActionPending } from '../redux'
 
@@ -74,6 +74,9 @@ export const productionSlice = createSlice({
 		nextPage(state) {
 			state.pageActive = state.pageActive + 1
 		},
+		setPage(state, action: PayloadAction<number>) {
+			state.pageActive = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addMatcher(
@@ -86,5 +89,5 @@ export const productionSlice = createSlice({
 	},
 })
 
-export const { cleanUp, setSearch, nextPage } = productionSlice.actions
+export const { cleanUp, setSearch, nextPage, setPage } = productionSlice.actions
 export const productionsReducer = productionSlice.reducer

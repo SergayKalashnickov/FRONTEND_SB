@@ -1,6 +1,5 @@
 import { Catalog } from '../catalog'
 
-export const FavoritItems = () => {
-
+export const FavoriteItems = () => {
 	return <Catalog />
 }

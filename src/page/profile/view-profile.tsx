@@ -2,18 +2,22 @@ import { Button, Typography } from '@mui/material'
 import styled from '@emotion/styled'
 import { fetchUsers } from '../../app/store/slices/userSlice'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { clearTokens } from '../../app/store/slices/authSlice'
 import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const Profile = () => {
 	const dispatch = useAppDispatch()
 	const user = useAppSelector((state) => state.user)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		dispatch(fetchUsers())
 	}, [])
 
-	const handlerExit = () => dispatch(clearTokens)
+	const handlerExit = () => {
+		localStorage.clear()
+		navigate('/signIn')
+	}
 
 	if (!user.user) return null
 
@@ -25,9 +29,7 @@ export const Profile = () => {
 					<Typography variant='h5'>{user.user.name}</Typography>
 					<Typography>{user.user.about}</Typography>
 					<Typography>{user.user.email}</Typography>
-					<Button href='/profile-edit' variant='outlined'>
-						Изменить
-					</Button>
+					<Link to='/profile-edit'>Изменить</Link>
 				</ProfilerInfo>
 			) : null}
 			<Button variant='outlined' onClick={handlerExit}>

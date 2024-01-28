@@ -2,13 +2,17 @@ import React, { FC, useEffect, useState } from 'react'
 
 import { Sort } from '../../components/sort'
 import { Card, SkeletonPage } from '../../components'
-import { Divider, Pagination } from '@mui/material'
+import { Divider } from '@mui/material'
 import styled from '@emotion/styled'
 import { withProtection } from '../../HOCs/withProtection'
 import { useGetAllProductQuery } from '../../app/api/api'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks'
-import { nextPage, cleanUp } from '../../app/store/slices/productionsSlice'
+import {
+	cleanUp,
+	nextPage,
+	setPage,
+} from '../../app/store/slices/productionsSlice'
 
 export const Catalog: FC = withProtection(() => {
 	const [productionOnPage, setProductionOnPage] = useState<Card[]>([])
@@ -18,8 +22,7 @@ export const Catalog: FC = withProtection(() => {
 	const { search, pageActive } = useAppSelector((state) => state.productions)
 	const dispatch = useAppDispatch()
 
-	const [page, setPage] = useState<number>(1)
-
+	console.log(searchParams.get('query'))
 	const { data: production, isLoading } = useGetAllProductQuery({
 		page: pageActive,
 		query: search,
@@ -27,13 +30,15 @@ export const Catalog: FC = withProtection(() => {
 	})
 
 	useEffect(() => {
-		if (
-			production &&
-			production.products.length &&
-			production.products !== productionOnPage
-		)
+		setProductionOnPage([])
+		dispatch(setPage(1))
+	}, [searchParams])
+
+	useEffect(() => {
+		if (production && production.products.length > 0) {
 			setProductionOnPage((prev) => prev.concat(production.products))
-	}, [pageActive])
+		}
+	}, [production])
 
 	useEffect(() => {
 		setSearchParams(search ? { query: search } : '')
@@ -45,9 +50,11 @@ export const Catalog: FC = withProtection(() => {
 
 	useEffect(() => {
 		const observer = new IntersectionObserver((entries) => {
-			if (entries[0].isIntersecting) {
-				dispatch(nextPage())
+			if (entries[0].isIntersecting && !isLoading) {
+				if (production && production.products.length > 0) dispatch(nextPage())
 			}
+			console.log(pageActive)
+			console.log(production)
 		})
 
 		const list = document.querySelector('#buttom')

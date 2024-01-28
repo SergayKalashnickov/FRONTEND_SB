@@ -7,16 +7,17 @@ import {
 	useGetAllProductQuery,
 	useGetProductByIdQuery,
 } from '../../app/api/api'
-import { Card, SkeletonPage } from '../../components'
+import { Card } from '../../components'
 import { addProductBasket } from '../../app/store/slices/userSlice'
 
-export const Basker = () => {
+export const Backer = () => {
 	const basket = useAppSelector((state) => state.user).basket
 	const user = useAppSelector((state) => state.user).user
 
 	const [page, setPage] = useState<number>(1)
 	const { data: production } = useGetAllProductQuery({
 		page: page,
+
 		query: '',
 		limit: 6,
 	})
@@ -25,7 +26,7 @@ export const Basker = () => {
 
 	return (
 		<PageWrapper>
-			<>{basket ? `Товаров в корзине ${basket.length}` : ''}</>
+			<div>{basket ? `Товаров в корзине ${basket.length}` : ''}</div>
 			{basket
 				? basket.map((item) => (
 						<BasketCard id={item.id} counter={item.counter}></BasketCard>
@@ -87,6 +88,7 @@ interface BasketCard {
 	counter: number
 	id: string
 }
+
 const BasketCard = (props: BasketCard) => {
 	const { id, counter } = props
 	const { data } = useGetProductByIdQuery({
